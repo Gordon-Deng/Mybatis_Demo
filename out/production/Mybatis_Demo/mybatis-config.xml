@@ -17,5 +17,8 @@
     </environments>
     <mappers>
         <mapper resource="com/demomybatis/pojo/Category.xml"/>
+        <mapper class="com.demomybatis.mapper.CategoryMapper"/>
     </mappers>
 </configuration>
+
+
