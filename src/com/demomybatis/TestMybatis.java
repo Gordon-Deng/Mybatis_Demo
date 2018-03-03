@@ -9,57 +9,25 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import com.demomybatis.mapper.CategoryMapper;
+import com.github.pagehelper.PageHelper;
 import com.demomybatis.pojo.Category;
   
 public class TestMybatis {
-  
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession session = sqlSessionFactory.openSession();
-        CategoryMapper mapper = session.getMapper(CategoryMapper.class);
- 
-//        add(mapper);
-//        delete(mapper);
-//        get(mapper);
-//        update(mapper);
-        listAll(mapper);
-             
-        session.commit();
-        session.close();
-  
-    }
- 
-    private static void update(CategoryMapper mapper) {
-        Category c= mapper.get(14);
-        c.setName("修改了的Category名稱");
-        mapper.update(c);
-        listAll(mapper);
-    }
- 
-    private static void get(CategoryMapper mapper) {
-        Category c= mapper.get(14);
-        System.out.println(c.getName());
-    }
- 
-    private static void delete(CategoryMapper mapper) {
-        mapper.delete(13);
-        listAll(mapper);
-    }
- 
-    private static void add(CategoryMapper mapper) {
-        Category c = new Category();
-        c.setName("新增加的Category");
-        mapper.add(c);
-        listAll(mapper);
-    }
-  
-    private static void listAll(CategoryMapper mapper) {
-        List<Category> cs = mapper.list();
+     
+
+        PageHelper.offsetPage(0, 5);
+
+        List<Category> cs = session.selectList("listCategory");
         for (Category c : cs) {
             System.out.println(c.getName());
         }
+
+        session.commit();
+        session.close();
     }
 }
